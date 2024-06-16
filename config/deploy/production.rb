@@ -8,7 +8,7 @@
 # server "db.example.com", user: "deploy", roles: %w{db}
 
 
-server '24.199.124.9', user: 'deploy', roles: %w{app db web}
+server '34.229.158.216', user: 'deploy', roles: %w{app db web}
 # role-based syntax
 # ==================
 
@@ -41,11 +41,11 @@ server '24.199.124.9', user: 'deploy', roles: %w{app db web}
 #
 # Global options
 # --------------
-#  set :ssh_options, {
-#    keys: %w(/home/user_name/.ssh/id_rsa),
-#    forward_agent: false,
-#    auth_methods: %w(password)
-#  }
+ set :ssh_options, {
+   keys: %w(../tattle-key.pem),
+   forward_agent: false,
+   auth_methods: %w(publickey)
+ }
 #
 # The server-based syntax can be used to override options:
 # ------------------------------------

@@ -2,8 +2,8 @@
 lock "~> 3.18.1"
 
 set :application, "EventApp"
-set :repo_url, "git@github.com:bhavyansh001/EventApp.git"
-set :branch, 'main'
+set :repo_url, "https://github.com/bhavyansh001/EventApp"
+set :branch, 'deploy_aws'
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
