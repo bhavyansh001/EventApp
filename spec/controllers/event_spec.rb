@@ -24,7 +24,10 @@ RSpec.describe EventsController, type: :controller do
 
   describe "GET #edit" do
     context "when user is logged in" do
-      before { sign_in user }
+      before {
+        user.confirm
+        sign_in user
+      }
 
       it "returns http success" do
         get :edit, params: { id: event.id }
