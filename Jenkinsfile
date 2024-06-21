@@ -3,9 +3,9 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "https://github.com/bhavyansh001/EventApp:${env.BUILD_ID}"
-        POSTGRES_USER = "${POSTGRES_USER}"
-        POSTGRES_PASSWORD = "${POSTGRES_PASSWORD}"
-        POSTGRES_DB = "${POSTGRES_DB}"
+        POSTGRES_USER = "${env.POSTGRES_USER}"
+        POSTGRES_PASSWORD = "${env.POSTGRES_PASSWORD}"
+        POSTGRES_DB = "${env.POSTGRES_DB}"
     }
 
     stages {
@@ -15,7 +15,7 @@ pipeline {
                     // Download and install Docker if not already available
                     sh '''
                         set -e
-                        if ! command -v docker &> /dev/null
+                        if! docker info &> /dev/null 
                         then
                             curl -fsSL https://get.docker.com -o get-docker.sh
                             sudo sh get-docker.sh
@@ -50,7 +50,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                     sh "sudo docker-compose build $DOCKER_IMAGE"
+                     sh "cd EventApp; sudo docker-compose build"
                 }
             }
         }
