@@ -15,7 +15,7 @@ pipeline {
                     // Download and install Docker if not already available
                     sh '''
                         set -e
-                        if ! docker info &> /dev/null 
+                        if ! command -v docker &> /dev/null
                         then
                             curl -fsSL https://get.docker.com -o get-docker.sh
                             sudo sh get-docker.sh
