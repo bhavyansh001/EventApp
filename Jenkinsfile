@@ -9,20 +9,30 @@ pipeline {
         stage('Prepare Environment') {
             steps {
                 script {
-                    // Download and install Docker if not already available
-                    sh '''
-                        set -e
-                        if ! command -v docker &> /dev/null
-                        then
-                            curl -fsSL https://get.docker.com -o get-docker.sh
-                            sudo sh get-docker.sh
-                            sudo usermod -aG docker jenkins
-                            sudo systemctl restart docker
-                        fi
-                    '''
+                    // Check if Docker CLI is available
+                    if (!fileExists('/usr/bin/docker')) {
+                        // Install Docker in rootless mode if not available
+                        sh '''
+                            curl -fsSL https://get.docker.com/rootless | sh
+                        '''
+                        // Add the current Jenkins user to the dockerd-rootless group
+                        sh '''
+                            sudo usermod -aG dockerd-rootless jenkins
+                        '''
+                        // Start the rootless Docker daemon
+                        sh '''
+                            dockerd-rootless-setuptool.sh install
+                            dockerd-rootless-setuptool.sh start
+                        '''
+                        // Wait for dockerd-rootless to start
+                        sh '''
+                            sleep 10
+                        '''
+                    }
                 }
             }
         }
+
         stage('Clone Repository') {
             steps {
                 checkout([
@@ -32,16 +42,20 @@ pipeline {
                 ])
             }
         }
+
         stage('Build Docker Image') {
             steps {
                 script {
+                    // Build Docker image
                     docker.build(DOCKER_IMAGE)
                 }
             }
         }
+
         stage('Run RSpec Tests') {
             steps {
                 script {
+                    // Run commands inside the Docker container
                     docker.image(DOCKER_IMAGE).inside {
                         sh 'bundle install'
                         sh 'bundle exec rspec'
@@ -53,6 +67,7 @@ pipeline {
 
     post {
         always {
+            // Clean workspace after execution
             cleanWs()
         }
     }
