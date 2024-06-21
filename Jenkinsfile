@@ -50,9 +50,19 @@ pipeline {
         }
 
         stage('Build Docker Image') {
+             environment {
+                POSTGRES_USER = "${env.POSTGRES_USER}"
+                POSTGRES_PASSWORD = "${env.POSTGRES_PASSWORD}"
+                POSTGRES_DB = "${env.POSTGRES_DB}"
+            }
             steps {
                 script {
-                     sh "sudo docker-compose build -e POSTGRES_USER = env["POSTGRES_USER"] POSTGRES_PASSWORD = env["POSTGRES_PASSWORD"]" POSTGRES_DB = env["POSTGRES_DB"]
+                     sh '''
+                        sudo docker-compose build \
+                        --build-arg POSTGRES_USER=${POSTGRES_USER} \
+                        --build-arg POSTGRES_PASSWORD=${POSTGRES_PASSWORD} \
+                        --build-arg POSTGRES_DB=${POSTGRES_DB}
+                    '''
                 }
             }
         }
