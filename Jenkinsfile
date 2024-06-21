@@ -9,26 +9,27 @@ pipeline {
         stage('Prepare Environment') {
             steps {
                 script {
-                    // Check if Docker CLI is available
-                    if (!fileExists('/usr/bin/docker')) {
-                        // Install Docker in rootless mode if not available
-                        sh '''
-                            curl -fsSL https://get.docker.com/rootless | sh
-                        '''
-                        // Add the current Jenkins user to the dockerd-rootless group
-                        sh '''
-                            sudo usermod -aG dockerd-rootless jenkins
-                        '''
-                        // Start the rootless Docker daemon
-                        sh '''
-                            dockerd-rootless-setuptool.sh install
-                            dockerd-rootless-setuptool.sh start
-                        '''
-                        // Wait for dockerd-rootless to start
-                        sh '''
-                            sleep 10
-                        '''
-                    }
+                    // Download and install Docker if not already available
+                    sh '''
+                        set -e
+                        if ! command -v docker &> /dev/null
+                        then
+                            curl -fsSL https://get.docker.com -o get-docker.sh
+                            sudo sh get-docker.sh
+                            sudo usermod -aG docker jenkins
+                            sudo systemctl restart docker
+                        fi
+                    '''
+                }
+                script {
+                    // Install Docker Compose if not already installed
+                    sh '''
+                        if ! command -v docker-compose &> /dev/null
+                        then
+                            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+                            chmod +x /usr/local/bin/docker-compose
+                        fi
+                    '''
                 }
             }
         }
