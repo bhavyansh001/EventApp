@@ -3,6 +3,9 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "https://github.com/bhavyansh001/EventApp:${env.BUILD_ID}"
+        POSTGRES_USER = "${POSTGRES_USER}"
+        POSTGRES_PASSWORD = "${POSTGRES_PASSWORD}"
+        POSTGRES_DB = "${POSTGRES_DB}"
     }
 
     stages {
