@@ -50,7 +50,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                     sh "cd ./EventApp; echo '$(pwd)'; sudo docker-compose build"
+                     sh "cd ./EventApp; sudo docker-compose build"
                 }
             }
         }
