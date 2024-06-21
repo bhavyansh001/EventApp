@@ -10,7 +10,7 @@ pipeline {
         stage('Prepare Environment') {
             steps {
                 script {
-                    // Download and install Docker if not already available
+                    // Download and install Docker
                     sh '''
                         set -e
                         if ! command -v docker &> /dev/null
