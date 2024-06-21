@@ -46,8 +46,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build
-                    docker.build(DOCKER_IMAGE)
+                    sudo 'docker build -t ' + DOCKER_IMAGE
                 }
             }
         }
