@@ -8,8 +8,6 @@ services:
       - .:/rails
     depends_on:  # Make your Rails app wait for the database to start
       - db
-    env_file:
-      - .env  # Load environment variables from .env file
 
   db:   # Your PostgreSQL database service
     image: postgres:14-alpine
@@ -18,9 +16,6 @@ services:
     volumes:
       - ./db-data/:/var/lib/postgresql/data/
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-  # Use environment variables from the .env file
-    env_file:
-      - .env  # Make sure this line is indented correctly
+      POSTGRES_USER: env.POSTGRES_USER
+      POSTGRES_PASSWORD: env.POSTGRES_PASSWORD
+      POSTGRES_DB: env.POSTGRES_DB
