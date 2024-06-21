@@ -3,9 +3,9 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "https://github.com/bhavyansh001/EventApp:${env.BUILD_ID}"
-        POSTGRES_USER = "${env.POSTGRES_USER}"
-        POSTGRES_PASSWORD = "${env.POSTGRES_PASSWORD}"
-        POSTGRES_DB = "${env.POSTGRES_DB}"
+        POSTGRES_USER = env["POSTGRES_USER"]
+        POSTGRES_PASSWORD = env["POSTGRES_PASSWORD"]
+        POSTGRES_DB = env["POSTGRES_DB"]
     }
 
     stages {
@@ -21,6 +21,8 @@ pipeline {
                             sudo sh get-docker.sh
                             sudo usermod -aG docker jenkins
                             sudo systemctl restart docker
+                         else
+                            echo "Docker is already installed."
                         fi
                     '''
                 }
@@ -31,6 +33,8 @@ pipeline {
                         then
                             sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
                             sudo chmod +x /usr/local/bin/docker-compose
+                         else
+                            echo "Docker Compose is already installed."
                         fi
                     '''
                 }
