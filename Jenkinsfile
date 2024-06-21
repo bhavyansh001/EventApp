@@ -3,9 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "https://github.com/bhavyansh001/EventApp:${env.BUILD_ID}"
-        POSTGRES_USER = env["POSTGRES_USER"]
-        POSTGRES_PASSWORD = env["POSTGRES_PASSWORD"]
-        POSTGRES_DB = env["POSTGRES_DB"]
+        
     }
 
     stages {
@@ -54,7 +52,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                     sh "sudo docker-compose build"
+                     sh "sudo docker-compose build -e POSTGRES_USER = env["POSTGRES_USER"] POSTGRES_PASSWORD = env["POSTGRES_PASSWORD"]" POSTGRES_DB = env["POSTGRES_DB"]
                 }
             }
         }
