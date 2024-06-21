@@ -58,10 +58,7 @@ pipeline {
             steps {
                 script {
                      sh '''
-                        sudo docker-compose build \
-                        --build-arg POSTGRES_USER=${POSTGRES_USER} \
-                        --build-arg POSTGRES_PASSWORD=${POSTGRES_PASSWORD} \
-                        --build-arg POSTGRES_DB=${POSTGRES_DB}
+                        POSTGRES_USER=${POSTGRES_USER} POSTGRES_PASSWORD=${POSTGRES_PASSWORD} POSTGRES_DB=${POSTGRES_DB} sudo docker-compose build
                     '''
                 }
             }
