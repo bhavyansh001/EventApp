@@ -6,6 +6,23 @@ pipeline {
     }
 
     stages {
+        stage('Prepare Environment') {
+            steps {
+                script {
+                    // Download and install Docker if not already available
+                    sh '''
+                        set -e
+                        if ! command -v docker &> /dev/null
+                        then
+                            curl -fsSL https://get.docker.com -o get-docker.sh
+                            sudo sh get-docker.sh
+                            sudo usermod -aG docker jenkins
+                            sudo systemctl restart docker
+                        fi
+                    '''
+                }
+            }
+        }
         stage('Clone Repository') {
             steps {
                 checkout([
