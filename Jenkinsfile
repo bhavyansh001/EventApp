@@ -25,7 +25,7 @@ pipeline {
                     '''
                 }
                 script {
-                    // Install Docker Compose if not already installed
+                    // Install Docker Compose
                     sh '''
                         if ! command -v docker-compose &> /dev/null
                         then
