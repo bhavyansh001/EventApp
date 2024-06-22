@@ -73,9 +73,9 @@ pipeline {
             steps {
                 script {
                     sh """
-                        sudo docker-compose exec web bundle install
-                        sudo docker-compose exec web bundle exec bin/rails db:migrate
-                        sudo docker-compose exec web bundle exec rspec
+                        sudo docker-compose exec -T web bundle install
+                        sudo docker-compose exec -T web bundle exec bin/rails db:migrate
+                        sudo docker-compose exec -T web bundle exec rspec
                     """
                 }
             }
