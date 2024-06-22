@@ -71,11 +71,11 @@ pipeline {
         stage('Run RSpec Tests') {
             steps {
                 script {
-                    // Run commands inside the Docker container
-                    docker.image(DOCKER_IMAGE).inside {
-                        sh 'bundle install'
-                        sh 'bundle exec rspec'
-                    }
+                    sh """
+                        docker-compose exec web bundle install
+                        docker-compose exec web bundle exec rspec
+                        sudo docker-compose build
+                    """
                 }
             }
         }
