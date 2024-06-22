@@ -58,12 +58,12 @@ pipeline {
             steps {
                 script {
                      // Create .env file with the environment variables
-                    sh '''
+                    sh """
                         echo "POSTGRES_USER=${env.POSTGRES_USER}" > .env
                         echo "POSTGRES_PASSWORD=${env.POSTGRES_PASSWORD}" >> .env
                         echo "POSTGRES_DB=${env.POSTGRES_DB}" >> .env
                         sudo docker-compose build
-                    '''
+                    """
                 }
             }
         }
