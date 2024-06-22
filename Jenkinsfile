@@ -81,10 +81,10 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            // Clean workspace
-            // cleanWs()
-        }
-    }
+    // post {
+    //     always {
+    //         // Clean workspace
+    //         // cleanWs()
+    //     }
+    // }
 }
