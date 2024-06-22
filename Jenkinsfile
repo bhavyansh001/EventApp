@@ -63,7 +63,7 @@ pipeline {
                         echo "POSTGRES_PASSWORD=${env.POSTGRES_PASSWORD}" >> .env
                         echo "POSTGRES_DB=${env.POSTGRES_DB}" >> .env
                         sudo docker-compose build
-                        sudo docker-compose up
+                        sudo docker-compose up --detach
                     """
                 }
             }
