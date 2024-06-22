@@ -74,18 +74,18 @@ pipeline {
                 script {
                     sh """
                         docker-compose exec web bundle install
+                        docker-compose exec web bundle exec bin/rails db:migrate
                         docker-compose exec web bundle exec rspec
-                        sudo docker-compose build
                     """
                 }
             }
         }
     }
 
-    // post {
-    //     always {
-    //         // Clean workspace
-    //         // cleanWs()
-    //     }
-    // }
+    post {
+        always {
+            // Bring down docker-compose
+            sh 'docker-compose down'
+        }
+    }
 }
