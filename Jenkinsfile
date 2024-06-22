@@ -73,9 +73,9 @@ pipeline {
             steps {
                 script {
                     sh """
-                        docker-compose exec web bundle install
-                        docker-compose exec web bundle exec bin/rails db:migrate
-                        docker-compose exec web bundle exec rspec
+                        sudo docker-compose exec web bundle install
+                        sudo docker-compose exec web bundle exec bin/rails db:migrate
+                        sudo docker-compose exec web bundle exec rspec
                     """
                 }
             }
@@ -85,7 +85,7 @@ pipeline {
     post {
         always {
             // Bring down docker-compose
-            sh 'docker-compose down'
+            sh 'sudo docker-compose down'
             cleanWs()
         }
     }
