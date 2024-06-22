@@ -86,6 +86,7 @@ pipeline {
         always {
             // Bring down docker-compose
             sh 'docker-compose down'
+            cleanWs()
         }
     }
 }
