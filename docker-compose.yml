@@ -4,8 +4,6 @@ services:
     command: bundle exec rails s -p 3000 -b '0.0.0.0'
     ports:
       - "3000:3000"
-    volumes:
-      - .:/rails
     depends_on:  # Make your Rails app wait for the database to start
       - db
     env_file:
@@ -15,8 +13,6 @@ services:
     image: postgres:14-alpine
     ports:
       - "5432:5432"
-    volumes:
-      - ./db-data/:/var/lib/postgresql/data/
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
