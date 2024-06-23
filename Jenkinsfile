@@ -88,7 +88,7 @@ pipeline {
             steps {
                 withSonarQubeEnv('sonar') {
 
-                    def reportPath = "${WORKSPACE}/sonar-report"
+                    reportPath = "${WORKSPACE}/sonar-report"
 
                     // Create the report directory if it doesn't exist
                      sh "mkdir -p ${reportPath}"
