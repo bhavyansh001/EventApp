@@ -85,7 +85,6 @@ pipeline {
             }
         }
     }
-}
 
     post {
         always {
@@ -99,3 +98,4 @@ pipeline {
             cleanWs()
         }
     }
+}
