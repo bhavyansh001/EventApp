@@ -84,11 +84,10 @@ pipeline {
         stage('SonarQube Analysis') {
             environment {
                 scannerHome = tool 'sonar4.7'
+                reportPath = "${WORKSPACE}/sonar-report"
             }
             steps {
                 withSonarQubeEnv('sonar') {
-
-                    reportPath = "${WORKSPACE}/sonar-report"
 
                     // Create the report directory if it doesn't exist
                      sh "mkdir -p ${reportPath}"
