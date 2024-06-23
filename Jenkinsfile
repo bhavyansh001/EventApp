@@ -98,11 +98,10 @@ pipeline {
                             -Dsonar.projectName=eventapp \
                             -Dsonar.projectVersion=1.0 \
                             -Dsonar.sources=app/controllers/ \
-                            -Dsonar.login=your_sonarqube_token \
                             -Dsonar.projectKey=ruby-eventapp \
-                            -Dsonar.sources=. \
+                            -Dsonar.sources=app/controllers/ \
                             -Dsonar.exclusions=**/vendor/**,**/config/**,**/log/**,**/tmp/** \
-                            -Dsonar.reportPaths=${reportPath}
+                            "-Dsonar.reportPaths=${reportPath}"
                     '''
                 }
             }
