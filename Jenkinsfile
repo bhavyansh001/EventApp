@@ -1,3 +1,7 @@
+def colorMap = [
+    'SUCCESS' : 'good',
+    'FAILURE' : 'danger'
+]
 pipeline {
     agent any
 
@@ -80,32 +84,6 @@ pipeline {
                 }
             }
         }
-
-        stage('SonarQube Analysis') {
-            environment {
-                scannerHome = tool 'sonar4.7'
-                reportPath = "${WORKSPACE}/sonar-report"
-            }
-            steps {
-                withSonarQubeEnv('sonar') {
-
-                    // Create the report directory if it doesn't exist
-                     sh "mkdir -p ${reportPath}"
-
-                    // Run SonarQube Scan
-                    sh '''
-                        ${scannerHome}/bin/sonar-scanner \
-                            -Dsonar.projectName=eventapp \
-                            -Dsonar.projectVersion=1.0 \
-                            -Dsonar.sources=app/controllers/ \
-                            -Dsonar.projectKey=ruby-eventapp \
-                            -Dsonar.sources=app/controllers/ \
-                            -Dsonar.exclusions=**/vendor/**,**/config/**,**/log/**,**/tmp/** \
-                            "-Dsonar.reportPaths=${reportPath}"
-                    '''
-                }
-            }
-        }
     }
 }
 
@@ -113,6 +91,11 @@ pipeline {
         always {
             // Bring down docker-compose
             sh 'sudo docker-compose down'
+            // Slack notification
+            echo 'Slack Notifications.'
+            slackSend channel: '#jenkinscicd',
+                color: COLOR_MAP[currentBuild.currentResult],
+                message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
             cleanWs()
         }
     }
