@@ -80,7 +80,36 @@ pipeline {
                 }
             }
         }
+
+        stage('SonarQube Analysis') {
+            environment {
+                scannerHome = tool 'sonar4.7'
+            }
+            steps {
+                withSonarQubeEnv('sonar') {
+
+                    def reportPath = "${WORKSPACE}/sonar-report"
+
+                    // Create the report directory if it doesn't exist
+                     sh "mkdir -p ${reportPath}"
+
+                    // Run SonarQube Scan
+                    sh '''
+                        ${scannerHome}/bin/sonar-scanner \
+                            -Dsonar.projectName=eventapp \
+                            -Dsonar.projectVersion=1.0 \
+                            -Dsonar.sources=app/controllers/ \
+                            -Dsonar.login=your_sonarqube_token \
+                            -Dsonar.projectKey=ruby-eventapp \
+                            -Dsonar.sources=. \
+                            -Dsonar.exclusions=**/vendor/**,**/config/**,**/log/**,**/tmp/** \
+                            -Dsonar.reportPaths=${reportPath}
+                    '''
+                }
+            }
+        }
     }
+}
 
     post {
         always {
@@ -89,4 +118,3 @@ pipeline {
             cleanWs()
         }
     }
-}
