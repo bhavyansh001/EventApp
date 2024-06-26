@@ -86,7 +86,7 @@ pipeline {
                     // lowercase appname to be used
                     sh """
                         docker login -u ${env.DOCKER_HUB_USER} -p ${env.DOCKER_HUB_PASS}
-                        docker tag eventapp:${env.BUILD_ID} ${env.DOCKER_HUB_USER}/eventapp:${env.BUILD_ID}
+                        docker tag eventapppipeline_web ${env.DOCKER_HUB_USER}/eventapp:${env.BUILD_ID}
                         docker push ${env.DOCKER_HUB_USER}/${env.APP_NAME}:${env.BUILD_ID}
                     """
                 }
