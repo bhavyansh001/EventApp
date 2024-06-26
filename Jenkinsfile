@@ -65,10 +65,6 @@ pipeline {
                         sudo docker-compose build
                         sudo docker-compose up --detach
                     """
-                    // Tag the image with the correct name and build ID
-                    sh """
-                        sudo docker tag ${env.APP_NAME}:${env.BUILD_ID}
-                    """
                 }
             }
         }
