@@ -96,6 +96,16 @@ pipeline {
             slackSend channel: '#jenkins-cicd',
                 color: COLOR_MAP[currentBuild.currentResult],
                 message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
+            
+        }
+        success {
+            script {
+                        sh """
+                            docker login -u ${env.DOCKER_HUB_USER} -p ${env.DOCKER_HUB_PASS}
+                            docker tag eventapp/${env.BUILD_ID} ${env.DOCKER_HUB_USER}/eventapp:${env.BUILD_ID}
+                            docker push ${env.DOCKER_HUB_USER}/eventapp:${env.BUILD_ID}
+                        """
+            }
             cleanWs()
         }
     }
