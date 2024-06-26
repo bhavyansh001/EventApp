@@ -6,11 +6,6 @@ def COLOR_MAP = [
 pipeline {
     agent any
 
-    environment {
-        DOCKER_IMAGE = "https://github.com/bhavyansh001/EventApp:${env.BUILD_ID}"
-        
-    }
-
     stages {
         stage('Prepare Environment') {
             steps {
@@ -49,7 +44,7 @@ pipeline {
                 checkout([
                     $class: 'GitSCM', 
                     branches: [[name: '*/jenkins']], 
-                    userRemoteConfigs: [[url: 'https://github.com/bhavyansh001/EventApp.git']]
+                    userRemoteConfigs: [[url: "https://github.com/bhavyansh001/${env.APP_NAME}.git"]]
                 ])
             }
         }
@@ -70,6 +65,10 @@ pipeline {
                         sudo docker-compose build
                         sudo docker-compose up --detach
                     """
+                    // Tag the image with the correct name and build ID
+                    sh """
+                        sudo docker tag ${env.APP_NAME}:${env.BUILD_ID}
+                    """
                 }
             }
         }
@@ -85,6 +84,17 @@ pipeline {
                 }
             }
         }
+        stage('Push to docker hub') {
+            steps {
+                script {
+                    sh """
+                        docker login -u ${env.DOCKER_HUB_USER} -p ${env.DOCKER_HUB_PASS}
+                        docker tag ${env.APP_NAME}:${env.BUILD_ID} ${env.DOCKER_HUB_USER}/${env.APP_NAME}:${env.BUILD_ID}
+                        docker push ${env.DOCKER_HUB_USER}/${env.APP_NAME}:${env.BUILD_ID}
+                    """
+                }
+            }
+        }
     }
 
     post {
@@ -96,16 +106,6 @@ pipeline {
             slackSend channel: '#jenkins-cicd',
                 color: COLOR_MAP[currentBuild.currentResult],
                 message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
-            
-        }
-        success {
-            script {
-                        sh """
-                            docker login -u ${env.DOCKER_HUB_USER} -p ${env.DOCKER_HUB_PASS}
-                            docker tag eventapp/${env.BUILD_ID} ${env.DOCKER_HUB_USER}/eventapp:${env.BUILD_ID}
-                            docker push ${env.DOCKER_HUB_USER}/eventapp:${env.BUILD_ID}
-                        """
-            }
             cleanWs()
         }
     }
