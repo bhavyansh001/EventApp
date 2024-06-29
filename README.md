@@ -4,16 +4,20 @@ EventApp is an event management system tailored for educational institutions. It
 
 ## Features
 
-- **Intuitive Event Creation**: Easily set up events with details such as title, description, date, time, location, and more.
-- **Event Approval Workflow**: Implement a pending event system for administrators to review and approve events.
-- **User Management**: Basic user registration and login, with role-based permissions for faculty, and administrators.
-- **Event History**: Track past events for reporting and analysis.
+### Intuitive Event Creation
+Easily set up events with details such as title, description, date, time, location, and more.
 
-## Time-Saving PDF Report Generation
+### Event Approval Workflow
+Implement a pending event system for administrators to review and approve events.
 
-EventApp includes a powerful feature for generating PDF reports in a predefined pattern specified by your organization. While traditionally, this process may take 15-20 minutes in Microsoft Word, EventApp completes it in just 1-2 minutes, significantly reducing the time required and helping to avoid time clashes in busy schedules.
+### User Management
+Basic user registration and login, with role-based permissions for faculty, and administrators.
 
-This feature not only saves time but also ensures consistency and efficiency in generating reports for various events within your educational institution.
+### Event History
+Track past events for reporting and analysis.
+
+### Time-Saving PDF Report Generation
+Generate PDF reports in a predefined pattern specified by your organization, saving significant time compared to traditional methods.
 
 ## Installation
 
@@ -52,6 +56,14 @@ rails server
 ### Development Testing
 
 The app uses RSpec for testing. Run tests with `rspec`.
+
+## Branches Explained
+
+### jenkins
+This branch is set up for a CI/CD pipeline using Jenkins. It automates the build, test, and deployment processes for EventApp.
+
+### deploy_aws
+Configured for deploying EventApp to AWS. It includes all necessary configurations and scripts for automated deployments using AWS services.
 
 ### Docker Support
 
